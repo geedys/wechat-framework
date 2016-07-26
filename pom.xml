@@ -26,16 +26,6 @@
         <compile.level>1.8</compile.level>
         <spring.version>4.3.1.RELEASE</spring.version>
     </properties>
-    <repositories>
-        <repository>
-            <id>Res</id>
-            <name>Res Repository</name>
-            <url>http://121.40.148.8:8080/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
