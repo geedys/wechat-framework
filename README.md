@@ -11,6 +11,7 @@
    &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.RedisTokenProxy"<br>
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/&gt;<br>
    Maven 添加依赖：<br>
+   <pre>
    &lt;dependency&gt;<br>
        &lt;groupId&gt;redis.clients&lt;/groupId&gt;<br>
        &lt;artifactId&gt;jedis&lt;/artifactId&gt;<br>
@@ -21,3 +22,4 @@
        &lt;artifactId&gt;spring-data-redis&lt;/artifactId&gt;<br>
        &lt;version&gt;1.7.2.RELEASE&lt;/version&gt;<br>
    &lt;/dependency&gt;<br>
+   </pre>
