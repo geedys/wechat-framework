@@ -23,3 +23,15 @@
        &lt;version&gt;1.7.2.RELEASE&lt;/version&gt;<br>
    &lt;/dependency&gt;<br>
    </pre>
+  (3) MemcachedTokenProxy,使用该方式，支持Memcached缓存服务器环境。
+      Spring 配置：
+      &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MemcachedTokenProxy"<br>
+             p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/&gt;<br>
+Maven 添加依赖：<br>
+   <pre>
+   &lt;dependency&gt;<br>
+       &lt;groupId&gt;com.whalin&lt;/groupId&gt;<br>
+       &lt;artifactId&gt;Memcached-Java-Client&lt;/artifactId&gt;<br>
+       &lt;version&gt;3.0.2&lt;/version&gt;<br>
+   &lt;/dependency&gt;<br>
+   </pre>
