@@ -10,6 +10,7 @@
    Spring 配置：<br>
    &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.RedisTokenProxy"<br>
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/&gt;<br>
+   参考配置文件：src/main/resources/spring-redis-example.xml<br>
    Maven 添加依赖：<br>
    <pre>
    &lt;dependency&gt;
@@ -27,6 +28,7 @@
       Spring 配置：<br>
       &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MemcachedTokenProxy"<br>
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/&gt;<br>
+      参考配置文件：src/main/resources/spring-memcached-example.xml<br>
       Maven 添加依赖：
    <pre>
    &lt;dependency&gt;
@@ -39,7 +41,8 @@
        Spring 配置：<br/>
        &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MongoDBTokenProxy"
                p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}" p:collectionName="xxx"/&gt;<br>
-       Notice:<font color="#00aa00">collectionName</font>属性用于配置MongoDB数据库中的集合名。
+       参考配置文件：src/main/resources/spring-mongodb-example.xml<br>
+       Notice:<font color="#00aa00">collectionName</font>属性用于配置MongoDB数据库中的集合名。<br>
        Maven 添加依赖：
    <pre>
    &lt;dependency&gt;
