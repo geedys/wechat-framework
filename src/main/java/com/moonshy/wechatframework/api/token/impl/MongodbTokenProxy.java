@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 使用MongoDB存储AccessToken.
@@ -40,6 +41,7 @@ public class MongodbTokenProxy extends AbstractTokenProxy {
     MongoTemplate mongoTemplate;
 
     @Override
+    @Transactional
     public String accessToken(String appid, String secret) {
         String key = ACCESS_TOKEN_PREFIX + appid;
         DBCollection collection = mongoTemplate.getCollection(collectionName);
@@ -79,6 +81,7 @@ public class MongodbTokenProxy extends AbstractTokenProxy {
     }
 
     @Override
+    @Transactional
     public String jsTiket(String appid, String secret) {
         String key = JS_TIKET_PREFIX + appid;
         DBCollection collection = mongoTemplate.getCollection(collectionName);
