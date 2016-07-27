@@ -12,26 +12,50 @@
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/&gt;<br>
    Maven 添加依赖：<br>
    <pre>
-   &lt;dependency&gt;<br>
-       &lt;groupId&gt;redis.clients&lt;/groupId&gt;<br>
-       &lt;artifactId&gt;jedis&lt;/artifactId&gt;<br>
-       &lt;version&gt;2.9.0&lt;/version&gt;<br>
-   &lt;/dependency&gt;<br>
-   &lt;dependency&gt;<br>
-       &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;<br>
-       &lt;artifactId&gt;spring-data-redis&lt;/artifactId&gt;<br>
-       &lt;version&gt;1.7.2.RELEASE&lt;/version&gt;<br>
-   &lt;/dependency&gt;<br>
+   &lt;dependency&gt;
+       &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+       &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+       &lt;version&gt;2.9.0&lt;/version&gt;
+   &lt;/dependency&gt;
+   &lt;dependency&gt;
+       &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;
+       &lt;artifactId&gt;spring-data-redis&lt;/artifactId&gt;
+       &lt;version&gt;1.7.2.RELEASE&lt;/version&gt;
+   &lt;/dependency&gt;
    </pre>
-  (3) MemcachedTokenProxy,使用该方式，支持Memcached缓存服务器环境。
+   (3) MemcachedTokenProxy,使用该方式，支持Memcached缓存服务器环境。
       Spring 配置：
       &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MemcachedTokenProxy"<br>
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/&gt;<br>
-Maven 添加依赖：<br>
+      Maven 添加依赖：
    <pre>
-   &lt;dependency&gt;<br>
-       &lt;groupId&gt;com.whalin&lt;/groupId&gt;<br>
-       &lt;artifactId&gt;Memcached-Java-Client&lt;/artifactId&gt;<br>
-       &lt;version&gt;3.0.2&lt;/version&gt;<br>
-   &lt;/dependency&gt;<br>
+   &lt;dependency&gt;
+       &lt;groupId&gt;com.whalin&lt;/groupId&gt;
+       &lt;artifactId&gt;Memcached-Java-Client&lt;/artifactId&gt;
+       &lt;version&gt;3.0.2&lt;/version&gt;
+   &lt;/dependency&gt;
+   </pre>
+   (4) MongoDBTokenProxy,使用该方式，支持MongoDB数据库存储。
+       Spring 配置：<br/>
+       &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MongoDBTokenProxy"
+               p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}" p:collectionName="xxx"/&gt;<br>
+       Notice:collectionName属性用于配置MongoDB数据库中的集合名。
+       Maven 添加依赖：
+   <pre>
+   &lt;dependency&gt;
+       &lt;groupId&gt;org.mongodb&lt;/groupId&gt;
+       &lt;artifactId&gt;mongodb-driver&lt;/artifactId&gt;
+       &lt;version&gt;3.3.0&lt;/version&gt;
+   &lt;/dependency&gt;
+   &lt;dependency&gt;
+       &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;
+       &lt;artifactId&gt;spring-data-mongodb&lt;/artifactId&gt;
+       &lt;version&gt;1.9.2.RELEASE&lt;/version&gt;
+       &lt;exclusions&gt;
+           &lt;exclusion&gt;
+               &lt;groupId&gt;org.mongodb&lt;/groupId&gt;
+               &lt;artifactId&gt;mongo-java-driver&lt;/artifactId&gt;
+           &lt;/exclusion&gt;
+       &lt;/exclusions&gt;
+   &lt;/dependency&gt;
    </pre>
