@@ -25,39 +25,45 @@ public class RedisTokenProxy extends AbstractTokenProxy {
 
     @Override
     public String accessToken(String appid, String secret) {
-        ValueOperations<String, String> operations = redisTemplate.opsForValue();
-        String token = operations.get(ACCESS_TOKEN_PREFIX + appid);
-        if (StringUtils.isNotEmpty(token)) {
-            logger.info("accessToken redis存在,accessToken=" + token);
-            return token;
-        } else {
-            String access_token = WxAccessTokenAPI.getAccess_token(appid, secret);
-            logger.info("accessToken redis未获取到,刷新accessToken=" + access_token);
-            if (StringUtils.isNotEmpty(access_token)) {
-                operations.set(ACCESS_TOKEN_PREFIX + appid, access_token, EXPIRE_TIME, TimeUnit.MILLISECONDS);
-                logger.info("accessToken 存入redis");
-                return access_token;
+        String key = ACCESS_TOKEN_PREFIX + appid;
+        synchronized (this) {
+            ValueOperations<String, String> operations = redisTemplate.opsForValue();
+            String token = operations.get(key);
+            if (StringUtils.isNotEmpty(token)) {
+                logger.info("accessToken redis存在,accessToken=" + token);
+                return token;
+            } else {
+                String access_token = WxAccessTokenAPI.getAccess_token(appid, secret);
+                logger.info("accessToken redis未获取到,刷新accessToken=" + access_token);
+                if (StringUtils.isNotEmpty(access_token)) {
+                    operations.set(key, access_token, EXPIRE_TIME, TimeUnit.MILLISECONDS);
+                    logger.info("accessToken 存入redis");
+                    return access_token;
+                }
             }
+            return null;
         }
-        return null;
     }
 
     @Override
     public String jsTiket(String appid, String secret) {
-        ValueOperations<String, String> operations = redisTemplate.opsForValue();
-        String token = operations.get(JS_TIKET_PREFIX + appid);
-        if (StringUtils.isNotEmpty(token)) {
-            logger.info("js_tiket redis存在,js_tiket=" + token);
-            return token;
-        } else {
-            String jsTiket = WxJsSDKAPI.getJs_tiket(accessToken(appid, secret));
-            logger.info("jsTiket redis未获取到,刷新js_tiket=" + jsTiket);
-            if (StringUtils.isNotEmpty(jsTiket)) {
-                operations.set(JS_TIKET_PREFIX + appid, jsTiket, EXPIRE_TIME, TimeUnit.MILLISECONDS);
-                logger.info("jsTiket 存入redis");
-                return jsTiket;
+        String key = JS_TIKET_PREFIX + appid;
+        synchronized (this) {
+            ValueOperations<String, String> operations = redisTemplate.opsForValue();
+            String token = operations.get(key);
+            if (StringUtils.isNotEmpty(token)) {
+                logger.info("js_tiket redis存在,js_tiket=" + token);
+                return token;
+            } else {
+                String jsTiket = WxJsSDKAPI.getJs_tiket(accessToken(appid, secret));
+                logger.info("jsTiket redis未获取到,刷新js_tiket=" + jsTiket);
+                if (StringUtils.isNotEmpty(jsTiket)) {
+                    operations.set(key, jsTiket, EXPIRE_TIME, TimeUnit.MILLISECONDS);
+                    logger.info("jsTiket 存入redis");
+                    return jsTiket;
+                }
             }
+            return null;
         }
-        return null;
     }
 }

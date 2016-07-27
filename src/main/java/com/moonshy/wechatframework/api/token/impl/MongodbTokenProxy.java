@@ -46,37 +46,35 @@ public class MongodbTokenProxy extends AbstractTokenProxy {
         String key = ACCESS_TOKEN_PREFIX + appid;
         DBCollection collection = mongoTemplate.getCollection(collectionName);
         DBObject queryObject = new Query(Criteria.where(COLUMN_KEY).is(key)).getQueryObject();
-        DBCursor dbCursor = collection.find(queryObject);
-        if (dbCursor.hasNext()) {
-            DBObject next = dbCursor.next();
-            if (Long.valueOf(next.get(COLUMN_EXPIRE).toString()) < System.currentTimeMillis()) {
-                logger.info("accessToken 过期");
+        synchronized (this) {
+            DBCursor dbCursor = collection.find(queryObject);
+            if (dbCursor.hasNext()) {
+                DBObject next = dbCursor.next();
+                if (Long.valueOf(next.get(COLUMN_EXPIRE).toString()) < System.currentTimeMillis()) {
+                    logger.info("accessToken 过期");
+                    String accessToken = WxAccessTokenAPI.getAccess_token(appid, secret);
+                    logger.info("获取到新的AccessToken:" + accessToken);
+                    BasicDBObject basicDBObject = new BasicDBObject(COLUMN_KEY, key).append(COLUMN_TOKEN, accessToken).append(COLUMN_EXPIRE, System.currentTimeMillis() + EXPIRE_TIME);
+                    logger.info("将最新的 accessToken 更新MongoDB");
+                    collection.update(queryObject, basicDBObject);
+                    return accessToken;
+                } else {
+                    return next.get(COLUMN_TOKEN).toString();
+                }
+            } else {
+                try {
+                    collection.createIndex(COLUMN_KEY);
+                    logger.info("首次插入token到MongoDB,创建索引：key");
+                } catch (Exception e) {
+                    logger.info("key 索引已存在");
+                }
                 String accessToken = WxAccessTokenAPI.getAccess_token(appid, secret);
                 logger.info("获取到新的AccessToken:" + accessToken);
-                BasicDBObject basicDBObject = new BasicDBObject(COLUMN_KEY, key)
-                        .append(COLUMN_TOKEN, accessToken)
-                        .append(COLUMN_EXPIRE, System.currentTimeMillis() + EXPIRE_TIME);
-                logger.info("将最新的 accessToken 更新MongoDB");
-                collection.update(queryObject, basicDBObject);
+                BasicDBObject basicDBObject = new BasicDBObject(COLUMN_KEY, key).append(COLUMN_TOKEN, accessToken).append(COLUMN_EXPIRE, System.currentTimeMillis() + EXPIRE_TIME);
+                logger.info("将最新的 accessToken 插入MongoDB");
+                collection.insert(basicDBObject);
                 return accessToken;
-            } else {
-                return next.get(COLUMN_TOKEN).toString();
             }
-        } else {
-            try {
-                collection.createIndex(COLUMN_KEY);
-                logger.info("首次插入token到MongoDB,创建索引：key");
-            } catch (Exception e) {
-                logger.info("key 索引已存在");
-            }
-            String accessToken = WxAccessTokenAPI.getAccess_token(appid, secret);
-            logger.info("获取到新的AccessToken:" + accessToken);
-            BasicDBObject basicDBObject = new BasicDBObject(COLUMN_KEY, key)
-                    .append(COLUMN_TOKEN, accessToken)
-                    .append(COLUMN_EXPIRE, System.currentTimeMillis() + EXPIRE_TIME);
-            logger.info("将最新的 accessToken 插入MongoDB");
-            collection.insert(basicDBObject);
-            return accessToken;
         }
     }
 
@@ -86,37 +84,35 @@ public class MongodbTokenProxy extends AbstractTokenProxy {
         String key = JS_TIKET_PREFIX + appid;
         DBCollection collection = mongoTemplate.getCollection(collectionName);
         DBObject queryObject = new Query(Criteria.where(COLUMN_KEY).is(key)).getQueryObject();
-        DBCursor dbCursor = collection.find(queryObject);
-        if (dbCursor.hasNext()) {
-            DBObject next = dbCursor.next();
-            if (Long.valueOf(next.get(COLUMN_EXPIRE).toString()) < System.currentTimeMillis()) {
-                logger.info("jstiket 过期");
+        synchronized (this) {
+            DBCursor dbCursor = collection.find(queryObject);
+            if (dbCursor.hasNext()) {
+                DBObject next = dbCursor.next();
+                if (Long.valueOf(next.get(COLUMN_EXPIRE).toString()) < System.currentTimeMillis()) {
+                    logger.info("jstiket 过期");
+                    String accessToken = WxJsSDKAPI.getJs_tiket(accessToken(appid, secret));
+                    logger.info("获取到新的jstiket:" + accessToken);
+                    BasicDBObject basicDBObject = new BasicDBObject(COLUMN_KEY, key).append(COLUMN_TOKEN, accessToken).append(COLUMN_EXPIRE, System.currentTimeMillis() + EXPIRE_TIME);
+                    logger.info("将最新的jstiket 更新MongoDB");
+                    collection.update(queryObject, basicDBObject);
+                    return accessToken;
+                } else {
+                    return next.get(COLUMN_TOKEN).toString();
+                }
+            } else {
+                try {
+                    collection.createIndex(COLUMN_KEY);
+                    logger.info("首次插入jstiket到MongoDB,创建索引：key");
+                } catch (Exception e) {
+                    logger.info("key 索引已存在");
+                }
                 String accessToken = WxJsSDKAPI.getJs_tiket(accessToken(appid, secret));
                 logger.info("获取到新的jstiket:" + accessToken);
-                BasicDBObject basicDBObject = new BasicDBObject(COLUMN_KEY, key)
-                        .append(COLUMN_TOKEN, accessToken)
-                        .append(COLUMN_EXPIRE, System.currentTimeMillis() + EXPIRE_TIME);
-                logger.info("将最新的jstiket 更新MongoDB");
-                collection.update(queryObject, basicDBObject);
+                BasicDBObject basicDBObject = new BasicDBObject(COLUMN_KEY, key).append(COLUMN_TOKEN, accessToken).append(COLUMN_EXPIRE, System.currentTimeMillis() + EXPIRE_TIME);
+                logger.info("将最新的 accessToken 插入MongoDB");
+                collection.insert(basicDBObject);
                 return accessToken;
-            } else {
-                return next.get(COLUMN_TOKEN).toString();
             }
-        } else {
-            try {
-                collection.createIndex(COLUMN_KEY);
-                logger.info("首次插入jstiket到MongoDB,创建索引：key");
-            } catch (Exception e) {
-                logger.info("key 索引已存在");
-            }
-            String accessToken = WxJsSDKAPI.getJs_tiket(accessToken(appid, secret));
-            logger.info("获取到新的jstiket:" + accessToken);
-            BasicDBObject basicDBObject = new BasicDBObject(COLUMN_KEY, key)
-                    .append(COLUMN_TOKEN, accessToken)
-                    .append(COLUMN_EXPIRE, System.currentTimeMillis() + EXPIRE_TIME);
-            logger.info("将最新的 accessToken 插入MongoDB");
-            collection.insert(basicDBObject);
-            return accessToken;
         }
     }
 }
