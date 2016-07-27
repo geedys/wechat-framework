@@ -45,7 +45,7 @@ public class MemcachedTokenProxy extends AbstractTokenProxy {
             String access_token = WxJsSDKAPI.getJs_tiket(accessToken(appid, secret));
             if (!StringUtils.isEmpty(access_token)) {
                 logger.info("获取到新的jstiket:" + access_token);
-                memCachedClient.add(key, access_token, new Date(EXPIRE_TIME));
+                memCachedClient.set(key, access_token, new Date(EXPIRE_TIME));
                 return access_token;
             }
         }
