@@ -200,4 +200,11 @@
             </resource>
         </resources>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>thirdparty</id>
+            <url>http://121.40.148.8:8080/nexus/content/repositories/thirdparty</url>
+        </repository>
+    </distributionManagement>
 </project>

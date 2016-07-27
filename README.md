@@ -2,7 +2,7 @@
 现在本项目全面支持Spring框架。
 
 1. TokenProxy获取AccessToken方式;<br>
-   (1) DefaultTokenProxy,使用该方式，支持本机ConcurrentHashMap来缓存accessToken.
+   (1) DefaultTokenProxy,使用该方式，支持本机ConcurrentHashMap来缓存accessToken.<br>
    Spring 配置：<br>
    &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.DefaultTokenProxy"<br>
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/&gt;<br>
@@ -23,8 +23,8 @@
        &lt;version&gt;1.7.2.RELEASE&lt;/version&gt;
    &lt;/dependency&gt;
    </pre>
-   (3) MemcachedTokenProxy,使用该方式，支持Memcached缓存服务器环境。
-      Spring 配置：
+   (3) MemcachedTokenProxy,使用该方式，支持Memcached缓存服务器环境。<br>
+      Spring 配置：<br>
       &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MemcachedTokenProxy"<br>
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/&gt;<br>
       Maven 添加依赖：
@@ -39,7 +39,7 @@
        Spring 配置：<br/>
        &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MongoDBTokenProxy"
                p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}" p:collectionName="xxx"/&gt;<br>
-       Notice:collectionName属性用于配置MongoDB数据库中的集合名。
+       Notice:<font color="#00aa00">collectionName</font>属性用于配置MongoDB数据库中的集合名。
        Maven 添加依赖：
    <pre>
    &lt;dependency&gt;
