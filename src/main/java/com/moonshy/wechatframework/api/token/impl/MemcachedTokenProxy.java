@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 
 /**
@@ -24,14 +22,13 @@ public class MemcachedTokenProxy extends AbstractTokenProxy {
     @Override
     public String accessToken(String appid, String secret) {
         String key = ACCESS_TOKEN_PREFIX + appid;
-        Object token = memCachedClient.get(key);
+        Object token = memCachedClient.get(key, null, true);
         if (token == null || StringUtils.isEmpty(token)) {
             logger.info("accessToken 不存在");
             String access_token = WxAccessTokenAPI.getAccess_token(appid, secret);
             if (!StringUtils.isEmpty(access_token)) {
                 logger.info("获取到新的AccessToken:" + access_token);
-                Date expireDate = Date.from(LocalDateTime.now().plusSeconds(EXPIRE_TIME / 1000).atZone(ZoneId.systemDefault()).toInstant());
-                memCachedClient.add(key, access_token, expireDate);
+                memCachedClient.set(key, access_token, new Date(EXPIRE_TIME));
                 return access_token;
             }
         }
@@ -48,8 +45,7 @@ public class MemcachedTokenProxy extends AbstractTokenProxy {
             String access_token = WxJsSDKAPI.getJs_tiket(accessToken(appid, secret));
             if (!StringUtils.isEmpty(access_token)) {
                 logger.info("获取到新的jstiket:" + access_token);
-                Date expireDate = Date.from(LocalDateTime.now().plusSeconds(EXPIRE_TIME / 1000).atZone(ZoneId.systemDefault()).toInstant());
-                memCachedClient.add(key, access_token, expireDate);
+                memCachedClient.add(key, access_token, new Date(EXPIRE_TIME));
                 return access_token;
             }
         }
