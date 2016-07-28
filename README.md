@@ -45,7 +45,7 @@
       \<bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MongoDBTokenProxy"
                p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}" p:collectionName="xxx"/>  
    参考配置文件：src/main/resources/spring-mongodb-example.xml  
-       Notice:***collectionName***属性用于配置MongoDB数据库中的集合名。  
+       Notice:***`collectionName`***属性用于配置MongoDB数据库中的集合名。  
        Maven 添加依赖：  
    ```xml
    <dependency>
