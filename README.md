@@ -28,7 +28,7 @@
    ```
    - MemcachedTokenProxy,使用该方式，支持Memcached缓存服务器环境。  
    Spring 配置：  
-      <bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MemcachedTokenProxy"  
+      \<bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MemcachedTokenProxy"  
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/>  
    参考配置文件：src/main/resources/spring-memcached-example.xml  
       Maven 添加依赖：     
@@ -37,11 +37,11 @@
       <groupId>com.whalin</groupId>  
       <artifactId>Memcached-Java-Client</artifactId>  
       <version>3.0.2</version>  
-   </dependency>  
+   </dependency>
    ```
    - MongoDBTokenProxy,使用该方式，支持MongoDB数据库存储。  
    Spring 配置：  
-       <bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MongoDBTokenProxy"
+      \<bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MongoDBTokenProxy"
                p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}" p:collectionName="xxx"/>  
    参考配置文件：src/main/resources/spring-mongodb-example.xml  
        Notice:***collectionName***属性用于配置MongoDB数据库中的集合名。  
