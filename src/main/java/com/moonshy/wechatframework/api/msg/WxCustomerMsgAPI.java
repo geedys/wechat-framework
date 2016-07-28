@@ -4,20 +4,21 @@
  */
 package com.moonshy.wechatframework.api.msg;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.moonshy.wechatframework.core.common.MsgType;
+import com.moonshy.wechatframework.core.exception.WeChatException;
 import com.moonshy.wechatframework.core.msg.Article;
 import com.moonshy.wechatframework.core.msg.Music;
 import com.moonshy.wechatframework.core.msg.Video;
+import com.moonshy.wechatframework.core.util.WeChatUtil;
+import com.moonshy.wechatframework.core.util.http.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.moonshy.wechatframework.core.util.http.HttpUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 发送客服消息
@@ -29,26 +30,6 @@ public class WxCustomerMsgAPI {
 	private static Logger logger = LoggerFactory.getLogger(WxCustomerMsgAPI.class);
 
 	private static final String MSG_URL = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=";
-
-	// private String accessToken;
-	// private String toUserOpenId;
-	// private String msgType; // msgtype
-	// private String msgBody; // 发送的消息post数据
-
-	/**
-	 * 需要主动去刷新access_token,不建议使用 建议自己去获取access_token保存，并定时刷新。 然后使用SendMsg(String
-	 * toUserOpenId,String accessToken)来替代本方法
-	 * 
-	 * @param toUserOpenId
-	 */
-	// public CustomerMsg(String toUserOpenId) {
-	// this.toUserOpenId = toUserOpenId;
-	// }
-
-	//
-	// public String getMsgBody() {
-	// return msgBody;
-	// }
 
 	/**
 	 * 发送客服消息
@@ -66,7 +47,12 @@ public class WxCustomerMsgAPI {
 		// 需要判断一下，防止上面刷新token失败
 		if (StringUtils.isNotBlank(accsee_token)) {
 			String url = MSG_URL + accsee_token;
-			HttpUtils.post(url, msgBody);
+			String post = HttpUtils.post(url, msgBody);
+			try {
+				WeChatUtil.isSuccess(post);
+			} catch (WeChatException e) {
+				logger.error(e.getMessage());
+			}
 		}
 	}
 
@@ -194,13 +180,13 @@ public class WxCustomerMsgAPI {
 	/**
 	 * 发送图文消息，单条图文消息
 	 * 
-	 * @param Title
+	 * @param title
 	 *            图文消息标题
-	 * @param Description
+	 * @param description
 	 *            图文消息描述
-	 * @param PicUrl
+	 * @param picUrl
 	 *            图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
-	 * @param Url
+	 * @param url
 	 *            点击图文消息跳转链接
 	 */
 	public static void sendNew(String title, String description, String picUrl, String url, String accsee_token, String toUserOpenId) {

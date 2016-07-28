@@ -2,12 +2,12 @@
 现在本项目全面支持Spring框架。
 
 1. TokenProxy获取AccessToken方式;<br>
-   (1) DefaultTokenProxy,使用该方式，支持本机ConcurrentHashMap来缓存accessToken.<br>
-   Spring 配置：<br>
+   - DefaultTokenProxy,使用该方式，支持本机ConcurrentHashMap来缓存accessToken.<br>
+   [Spring 配置]：<br>
    &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.DefaultTokenProxy"<br>
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/&gt;<br>
-   (2) RedisTokenProxy,使用该方式，支持Redis分布式环境。<br>
-   Spring 配置：<br>
+   - RedisTokenProxy,使用该方式，支持Redis分布式环境。<br>
+   [Spring 配置]：<br>
    &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.RedisTokenProxy"<br>
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/&gt;<br>
    参考配置文件：src/main/resources/spring-redis-example.xml<br>
@@ -24,11 +24,11 @@
        &lt;version&gt;1.7.2.RELEASE&lt;/version&gt;
    &lt;/dependency&gt;
    </pre>
-   (3) MemcachedTokenProxy,使用该方式，支持Memcached缓存服务器环境。<br>
-      Spring 配置：<br>
+   - MemcachedTokenProxy,使用该方式，支持Memcached缓存服务器环境。<br>
+   [Spring 配置]：<br>
       &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MemcachedTokenProxy"<br>
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/&gt;<br>
-      参考配置文件：src/main/resources/spring-memcached-example.xml<br>
+   参考配置文件：src/main/resources/spring-memcached-example.xml<br>
       Maven 添加依赖：
    <pre>
    &lt;dependency&gt;
@@ -37,11 +37,11 @@
        &lt;version&gt;3.0.2&lt;/version&gt;
    &lt;/dependency&gt;
    </pre>
-   (4) MongoDBTokenProxy,使用该方式，支持MongoDB数据库存储。
-       Spring 配置：<br/>
+   - MongoDBTokenProxy,使用该方式，支持MongoDB数据库存储。<br/>
+   [Spring 配置]：<br/>
        &lt;bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MongoDBTokenProxy"
                p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}" p:collectionName="xxx"/&gt;<br>
-       参考配置文件：src/main/resources/spring-mongodb-example.xml<br>
+   参考配置文件：src/main/resources/spring-mongodb-example.xml<br>
        Notice:<font color="#00aa00">collectionName</font>属性用于配置MongoDB数据库中的集合名。<br>
        Maven 添加依赖：
    <pre>

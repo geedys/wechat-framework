@@ -9,4 +9,4 @@
 
 备注：支持使用 AMD/CMD 标准模块加载方法加载
 
-开发文档：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+[开发文档](http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html)
