@@ -4,11 +4,11 @@
 ##TokenProxy获取AccessToken方式
    - DefaultTokenProxy方式  
    支持本机ConcurrentHashMap来缓存accessToken.  
-   Spring 配置：  
+   ***Spring 配置***：  
    \<bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.DefaultTokenProxy"  
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/>
-   - RedisTokenProxy方式，支持Redis分布式环境。  
-   Spring 配置：  
+   - RedisTokenProxy方式，支持Redis分布式环境。 
+   ***Spring 配置***：  
    \<bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.RedisTokenProxy"  
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/>  
    参考配置文件：src/main/resources/spring-redis-example.xml  
@@ -26,13 +26,14 @@
       <version>1.7.2.RELEASE</version>  
    </dependency>  
    ```
-   - MemcachedTokenProxy,使用该方式，支持Memcached缓存服务器环境。  
-   Spring 配置：  
+   - MemcachedTokenProxy,使用该方式，支持Memcached缓存服务器环境。
+   ***Spring 配置***：  
       \<bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MemcachedTokenProxy"  
              p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}"/>  
    参考配置文件：src/main/resources/spring-memcached-example.xml  
-      Maven 添加依赖：     
-   ```xml  
+      Maven 添加依赖:  
+
+   ```xml
    <dependency>  
       <groupId>com.whalin</groupId>  
       <artifactId>Memcached-Java-Client</artifactId>  
@@ -40,7 +41,7 @@
    </dependency>
    ```
    - MongoDBTokenProxy,使用该方式，支持MongoDB数据库存储。  
-   Spring 配置：  
+   ***Spring 配置***：  
       \<bean id="tokenProxy" class="com.richong.wechatframework.api.token.impl.MongoDBTokenProxy"
                p:appid="${wechat.appid}" p:appSecret="${wechat.appsecret}" p:collectionName="xxx"/>  
    参考配置文件：src/main/resources/spring-mongodb-example.xml  
