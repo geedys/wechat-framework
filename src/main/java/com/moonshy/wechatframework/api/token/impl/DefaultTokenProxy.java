@@ -18,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultTokenProxy extends AbstractTokenProxy {
 
     private static Logger logger = LoggerFactory.getLogger(DefaultTokenProxy.class);
+    private static final String EXPIRE_TIME_KEY = "EXPIRE_TIME_KEY";
 
     /**
      * 默认token容器
@@ -35,7 +36,7 @@ public class DefaultTokenProxy extends AbstractTokenProxy {
             tokenMap.put(key, map);
         }
         map.put(ACCESS_TOKEN_PREFIX, access_token);
-        map.put("EXPIRE_TIME", System.currentTimeMillis() + EXPIRE_TIME);
+        map.put(EXPIRE_TIME_KEY, System.currentTimeMillis() + EXPIRE_TIME);
         return access_token;
     }
 
@@ -50,7 +51,7 @@ public class DefaultTokenProxy extends AbstractTokenProxy {
             tokenMap.put(key, map);
         }
         map.put(JS_TICKET_PREFIX, jsTicket);
-        map.put("EXPIRE_TIME", System.currentTimeMillis() + EXPIRE_TIME);
+        map.put(EXPIRE_TIME_KEY, System.currentTimeMillis() + EXPIRE_TIME);
         return jsTicket;
     }
 
@@ -59,7 +60,7 @@ public class DefaultTokenProxy extends AbstractTokenProxy {
         Map<Object, Object> map = tokenMap.get(key);
         if (map != null) {
             // 获取token存储时间
-            Long expireTime = (Long) map.get("EXPIRE_TIME");
+            Long expireTime = (Long) map.get(EXPIRE_TIME_KEY);
             if (System.currentTimeMillis() <= expireTime) {
                 return map.get(key.startsWith(ACCESS_TOKEN_PREFIX) ? ACCESS_TOKEN_PREFIX : JS_TICKET_PREFIX).toString();
             }
