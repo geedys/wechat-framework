@@ -3,7 +3,6 @@ package com.moonshy.wechatframework.api.token.impl;
 import com.moonshy.wechatframework.api.jsapi.WxJsSDKAPI;
 import com.moonshy.wechatframework.api.token.AbstractTokenProxy;
 import com.moonshy.wechatframework.api.token.WxAccessTokenAPI;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,47 +22,26 @@ public class RedisTokenProxy extends AbstractTokenProxy {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
+    ValueOperations<String, String> operations = redisTemplate.opsForValue();
+
     @Override
-    public String accessToken(String appid, String secret) {
-        String key = ACCESS_TOKEN_PREFIX + appid;
-        synchronized (this) {
-            ValueOperations<String, String> operations = redisTemplate.opsForValue();
-            String token = operations.get(key);
-            if (StringUtils.isNotEmpty(token)) {
-                logger.info("accessToken redis存在,accessToken=" + token);
-                return token;
-            } else {
-                String access_token = WxAccessTokenAPI.getAccess_token(appid, secret);
-                logger.info("accessToken redis未获取到,刷新accessToken=" + access_token);
-                if (StringUtils.isNotEmpty(access_token)) {
-                    operations.set(key, access_token, EXPIRE_TIME, TimeUnit.MILLISECONDS);
-                    logger.info("accessToken 存入redis");
-                    return access_token;
-                }
-            }
-            return null;
-        }
+    public String saveAccessToken(String appid, String appsecret) {
+        String accessToken = WxAccessTokenAPI.getAccess_token(appid, appid);
+        operations.set(tokenKey(), accessToken, EXPIRE_TIME, TimeUnit.MILLISECONDS);
+        logger.info("成功保存accessToken:" + accessToken);
+        return accessToken;
     }
 
     @Override
-    public String jsTiket(String appid, String secret) {
-        String key = JS_TIKET_PREFIX + appid;
-        synchronized (this) {
-            ValueOperations<String, String> operations = redisTemplate.opsForValue();
-            String token = operations.get(key);
-            if (StringUtils.isNotEmpty(token)) {
-                logger.info("js_tiket redis存在,js_tiket=" + token);
-                return token;
-            } else {
-                String jsTiket = WxJsSDKAPI.getJs_tiket(accessToken(appid, secret));
-                logger.info("jsTiket redis未获取到,刷新js_tiket=" + jsTiket);
-                if (StringUtils.isNotEmpty(jsTiket)) {
-                    operations.set(key, jsTiket, EXPIRE_TIME, TimeUnit.MILLISECONDS);
-                    logger.info("jsTiket 存入redis");
-                    return jsTiket;
-                }
-            }
-            return null;
-        }
+    public String saveJsTicket(String accessToken) {
+        String jsTicket = WxJsSDKAPI.getJsTicket(accessToken);
+        operations.set(jsTicketKey(), jsTicket, EXPIRE_TIME, TimeUnit.MILLISECONDS);
+        logger.info("成功保存jsTiket:" + jsTicket);
+        return jsTicket;
+    }
+
+    @Override
+    public String getResultValue(String key) {
+        return operations.get(key);
     }
 }

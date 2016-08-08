@@ -7,7 +7,6 @@ import com.whalin.MemCached.MemCachedClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
@@ -20,40 +19,24 @@ public class MemcachedTokenProxy extends AbstractTokenProxy {
     MemCachedClient memCachedClient;
 
     @Override
-    public String accessToken(String appid, String secret) {
-        String key = ACCESS_TOKEN_PREFIX + appid;
-        synchronized (this) {
-            Object token = memCachedClient.get(key, null, true);
-            if (token == null || StringUtils.isEmpty(token)) {
-                logger.info("accessToken 不存在");
-                String access_token = WxAccessTokenAPI.getAccess_token(appid, secret);
-                if (!StringUtils.isEmpty(access_token)) {
-                    logger.info("获取到新的AccessToken:" + access_token);
-                    memCachedClient.set(key, access_token, new Date(EXPIRE_TIME));
-                    return access_token;
-                }
-            }
-            logger.info("返回accessToken:" + token);
-            return (String) token;
-        }
+    public String saveAccessToken(String appid, String appsecret) {
+        String accessToken = WxAccessTokenAPI.getAccess_token(appid, appsecret);
+        memCachedClient.set(tokenKey(), accessToken, new Date(EXPIRE_TIME));
+        logger.info("成功保存accessToken:" + accessToken);
+        return accessToken;
     }
 
     @Override
-    public String jsTiket(String appid, String secret) {
-        String key = JS_TIKET_PREFIX + appid;
-        synchronized (this) {
-            Object token = memCachedClient.get(key);
-            if (token == null || StringUtils.isEmpty(token)) {
-                logger.info("jstiket 不存在");
-                String access_token = WxJsSDKAPI.getJs_tiket(accessToken(appid, secret));
-                if (!StringUtils.isEmpty(access_token)) {
-                    logger.info("获取到新的jstiket:" + access_token);
-                    memCachedClient.set(key, access_token, new Date(EXPIRE_TIME));
-                    return access_token;
-                }
-            }
-            logger.info("返回jstiket:" + token);
-            return (String) token;
-        }
+    public String saveJsTicket(String accessToken) {
+        String jsTicket = WxJsSDKAPI.getJsTicket(accessToken);
+        memCachedClient.set(jsTicketKey(), jsTicket, new Date(EXPIRE_TIME));
+        logger.info("成功保存jsTiket:" + jsTicket);
+        return jsTicket;
+    }
+
+    @Override
+    public String getResultValue(String key) {
+        Object result = memCachedClient.get(key, null, true);
+        return result == null ? null : result.toString();
     }
 }

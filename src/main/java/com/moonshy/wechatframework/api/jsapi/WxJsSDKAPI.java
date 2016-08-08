@@ -26,7 +26,7 @@ public class WxJsSDKAPI {
 	 * @CreationDate 2016年5月25日 下午3:59:07
 	 * @Author moonshy
 	 */
-	public static String getJs_tiket(String access_token) {
+	public static String getJsTicket(String access_token) {
 		JSSDKParams jssdkConf = new JSSDKParams();
 		jssdkConf.setAccess_token(access_token);
 		jssdkConf = getJSSDKConf(jssdkConf);
