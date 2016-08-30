@@ -68,7 +68,7 @@ public abstract class AbstractTokenProxy implements TokenProxy {
                     }
                 }
                 while (StringUtils.isEmpty(accessToken = getResultValue(key))) {
-                    this.saveAccessToken(getAppid(), getAppSecret());
+                    this.saveAccessToken(appid, secret);
                 }
 
             }

@@ -44,7 +44,8 @@ abstract class WechatDispatcher implements IDispatcher {
             }
             return xml;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+            logger.error(e.getCause().getMessage());
         }
         return WechatCommonConst.SERVICE_ERROR.getValue();
     }
