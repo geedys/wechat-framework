@@ -1,7 +1,7 @@
-#wechat-framework(v1.0.0)文档
-###微信公众平台SDK开发框架，封装了微信公众平台的接口，方便开发者快速构建微信公众号应用，专注于业务逻辑开发，提高开发效率。  
-####现在本项目全面支持Spring框架(基于Spring4.3.1构建)。项目编译基于JDK8
-##TokenProxy获取AccessToken方式(支持定时刷新)
+# wechat-framework(v1.0.0)文档
+### 微信公众平台SDK开发框架，封装了微信公众平台的接口，方便开发者快速构建微信公众号应用，专注于业务逻辑开发，提高开发效率。  
+#### 现在本项目全面支持Spring框架(基于Spring4.3.1构建)。项目编译基于JDK8
+## TokenProxy获取AccessToken方式(支持定时刷新)
    - **DefaultTokenProxy**方式  
    支持本机ConcurrentHashMap来缓存accessToken.  
 ***Spring 配置***：  
